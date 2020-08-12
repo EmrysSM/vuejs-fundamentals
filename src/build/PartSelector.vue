@@ -26,8 +26,8 @@ export default {
       required: true,
       validator(value) {
         return ["left", "right", "top", "bottom", "center"].includes(value);
-      },
-    },
+      }
+    }
   },
   data() {
     return { selectedPartIndex: 0 };
@@ -35,7 +35,7 @@ export default {
   computed: {
     selectedPart() {
       return this.parts[this.selectedPartIndex];
-    },
+    }
   },
   created() {
     this.emitSelectedPart();
@@ -58,8 +58,8 @@ export default {
         this.selectedPartIndex,
         this.parts.length
       );
-    },
-  },
+    }
+  }
 };
 </script>
 
