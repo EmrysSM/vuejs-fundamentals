@@ -1,6 +1,13 @@
 <template>
   <div class="part" :class="position">
-    <img :src="selectedPart.src" title="arm" />
+    <router-link :to="{
+        name: 'Parts',
+        params: {
+          id: this.selectedPart.id,
+          partType: this.selectedPart.type,
+        }}">
+      <img :src="selectedPart.src" title="arm" />
+    </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
     <span class="sale" v-show="selectedPart.onSale">Sale!</span>
@@ -26,8 +33,8 @@ export default {
       required: true,
       validator(value) {
         return ["left", "right", "top", "bottom", "center"].includes(value);
-      }
-    }
+      },
+    },
   },
   data() {
     return { selectedPartIndex: 0 };
@@ -35,7 +42,7 @@ export default {
   computed: {
     selectedPart() {
       return this.parts[this.selectedPartIndex];
-    }
+    },
   },
   created() {
     this.emitSelectedPart();
@@ -58,8 +65,8 @@ export default {
         this.selectedPartIndex,
         this.parts.length
       );
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -89,6 +96,7 @@ export default {
 }
 .part img {
   width: 165px;
+  cursor: pointer;
 }
 .top {
   border-bottom: none;
