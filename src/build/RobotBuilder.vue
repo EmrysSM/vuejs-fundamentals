@@ -4,68 +4,73 @@
       <CollapsibleSection>
         <div class="preview-content">
           <div class="top-row">
-            <img :src="selectedRobot.head.src"/>
+            <img :src="selectedRobot.head.src" />
           </div>
           <div class="middle-row">
-            <img :src="selectedRobot.leftArm.src" class="rotate-left"/>
-            <img :src="selectedRobot.torso.src"/>
-            <img :src="selectedRobot.rightArm.src" class="rotate-right"/>
+            <img :src="selectedRobot.leftArm.src" class="rotate-left" />
+            <img :src="selectedRobot.torso.src" />
+            <img :src="selectedRobot.rightArm.src" class="rotate-right" />
           </div>
           <div class="bottom-row">
-            <img :src="selectedRobot.base.src"/>
+            <img :src="selectedRobot.base.src" />
           </div>
         </div>
       </CollapsibleSection>
       <button class="add-to-cart" @click="addToCart()">Add to Cart</button>
     </div>
     <div class="top-row">
-        <!-- <div class="robot-name">
+      <!-- <div class="robot-name">
           {{ selectedRobot.head.title }}
           <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
         </div> -->
-        <PartSelector :parts="availableParts.heads" position="top" @partSelected="part => selectedRobot.head = part"/>
+      <PartSelector
+        :parts="availableParts.heads"
+        position="top"
+        @partSelected="part => (selectedRobot.head = part)"
+      />
     </div>
     <div class="middle-row">
-      <PartSelector :parts="availableParts.arms" position="left" @partSelected="part => selectedRobot.leftArm = part"/>
-      <PartSelector :parts="availableParts.torsos" position="center" @partSelected="part => selectedRobot.torso = part"/>
-      <PartSelector :parts="availableParts.arms" position="right" @partSelected="part => selectedRobot.rightArm = part"/>
+      <PartSelector
+        :parts="availableParts.arms"
+        position="left"
+        @partSelected="part => (selectedRobot.leftArm = part)"
+      />
+      <PartSelector
+        :parts="availableParts.torsos"
+        position="center"
+        @partSelected="part => (selectedRobot.torso = part)"
+      />
+      <PartSelector
+        :parts="availableParts.arms"
+        position="right"
+        @partSelected="part => (selectedRobot.rightArm = part)"
+      />
     </div>
     <div class="bottom-row">
-      <PartSelector :parts="availableParts.bases" position="bottom" @partSelected="part => selectedRobot.base = part"/>
+      <PartSelector
+        :parts="availableParts.bases"
+        position="bottom"
+        @partSelected="part => (selectedRobot.base = part)"
+      />
     </div>
-    <div>
-    <h1>Cart</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Robot</th>
-          <th class="cost">Cost</th>
-        </tr>
-        <tbody>
-          <tr v-for="(robot, index) in cart" :key="index">
-            <td>{{robot.head.title}}</td>
-            <td class="cost">{{robot.cost}}</td>
-          </tr>
-        </tbody>
-      </thead>
-    </table>
-  </div>
   </div>
 </template>
 
 <script>
 import availableParts from "../data/parts";
-import createdHookMixin from './created-hook-mixin';
-import PartSelector from './PartSelector.vue';
-import CollapsibleSection from '../shared/CollapsibleSection.vue';
+import createdHookMixin from "./created-hook-mixin";
+import PartSelector from "./PartSelector.vue";
+import CollapsibleSection from "../shared/CollapsibleSection.vue";
 
 export default {
   name: "RobotBuilder",
   beforeRouteLeave(to, from, next) {
-    if(this.addedToCart) {
+    if (this.addedToCart) {
       next(true);
     } else {
-      const response = confirm('You need ot add your selection to the cart, are you sure you want to leave?');
+      const response = confirm(
+        "You need ot add your selection to the cart, are you sure you want to leave?"
+      );
       next(response);
     }
   },
@@ -90,11 +95,13 @@ export default {
   mixins: [createdHookMixin],
   computed: {
     saleBorderClass() {
-      return this.selectedRobot.head.onSale ? 'sale-border' : '';
+      return this.selectedRobot.head.onSale ? "sale-border" : "";
     },
     headBorderStyle() {
-      return { 
-        border: this.selectedRobot.head.onSale ? '3px solid red' : '3px solid #aaa', 
+      return {
+        border: this.selectedRobot.head.onSale
+          ? "3px solid red"
+          : "3px solid #aaa",
       };
     },
   },
@@ -107,7 +114,7 @@ export default {
         robot.torso.cost +
         robot.leftArm.cost +
         robot.base.cost;
-      this.cart.push(Object.assign({}, robot, { cost }));
+      this.$store.commit("addRobotToCart", Object.assign({}, robot, { cost }));
       this.addedToCart = true;
     },
   },
@@ -222,14 +229,6 @@ export default {
   padding: 3px;
   font-size: 16px;
 }
-td, th {
-  text-align: left;
-  padding: 3px;
-  padding-right: 20px;
-}
-.cost {
-  text-align: right;
-}
 .sale-border {
   border: 3px solid red;
 }
@@ -253,5 +252,5 @@ td, th {
 }
 .rotate-left {
   transform: rotate(-90deg);
-}
-</style>{}
+}</style
+>{}
