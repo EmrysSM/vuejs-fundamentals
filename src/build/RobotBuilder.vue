@@ -26,31 +26,31 @@
       <PartSelector
         :parts="availableParts.heads"
         position="top"
-        @partSelected="part => (selectedRobot.head = part)"
+        @partSelected="(part) => (selectedRobot.head = part)"
       />
     </div>
     <div class="middle-row">
       <PartSelector
         :parts="availableParts.arms"
         position="left"
-        @partSelected="part => (selectedRobot.leftArm = part)"
+        @partSelected="(part) => (selectedRobot.leftArm = part)"
       />
       <PartSelector
         :parts="availableParts.torsos"
         position="center"
-        @partSelected="part => (selectedRobot.torso = part)"
+        @partSelected="(part) => (selectedRobot.torso = part)"
       />
       <PartSelector
         :parts="availableParts.arms"
         position="right"
-        @partSelected="part => (selectedRobot.rightArm = part)"
+        @partSelected="(part) => (selectedRobot.rightArm = part)"
       />
     </div>
     <div class="bottom-row">
       <PartSelector
         :parts="availableParts.bases"
         position="bottom"
-        @partSelected="part => (selectedRobot.base = part)"
+        @partSelected="(part) => (selectedRobot.base = part)"
       />
     </div>
   </div>
@@ -64,7 +64,7 @@ import CollapsibleSection from "../shared/CollapsibleSection.vue";
 export default {
   name: "RobotBuilder",
   created() {
-    this.$store.dispatch('getParts');
+    this.$store.dispatch("robots/getParts");
   },
   beforeRouteLeave(to, from, next) {
     if (this.addedToCart) {
@@ -96,7 +96,7 @@ export default {
   mixins: [createdHookMixin],
   computed: {
     availableParts() {
-      return this.$store.state.parts;
+      return this.$store.state.robots.parts;
     },
     saleBorderClass() {
       return this.selectedRobot.head.onSale ? "sale-border" : "";
@@ -118,7 +118,9 @@ export default {
         robot.torso.cost +
         robot.leftArm.cost +
         robot.base.cost;
-      this.$store.commit("addRobotToCart", Object.assign({}, robot, { cost }));
+      this.$store
+        .dispatch("robots/addRobotToCart", Object.assign({}, robot, { cost }))
+        .then(() => this.$router.push("/cart"));
       this.addedToCart = true;
     },
   },
