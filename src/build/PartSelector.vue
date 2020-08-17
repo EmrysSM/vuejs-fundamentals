@@ -1,20 +1,30 @@
 <template>
   <div class="part" :class="position">
-    <router-link :to="{
+    <router-link
+      :to="{
         name: 'Parts',
         params: {
           id: this.selectedPart.id,
           partType: this.selectedPart.type,
-        }}">
+        },
+      }"
+    >
       <img :src="selectedPart.src" title="arm" />
     </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
-    <span class="sale" v-show="selectedPart.onSale">Sale!</span>
+    <span
+      v-pin="{ bottom: '10px', right: '5px' }"
+      class="sale"
+      v-show="selectedPart.onSale"
+      >Sale!</span
+    >
   </div>
 </template>
 
 <script>
+import pinDirective from "../shared/pin-directive";
+
 function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
   return deprecatedIndex < 0 ? length - 1 : deprecatedIndex;
@@ -26,6 +36,7 @@ function getNextValidIndex(index, length) {
 }
 
 export default {
+  directives: { pin: pinDirective },
   props: {
     parts: { type: Array, required: true },
     position: {
